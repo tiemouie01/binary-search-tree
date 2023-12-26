@@ -15,14 +15,47 @@ const buildTree = function buildTheBinarySearchTree(array) {
   const middle = Math.floor(array.length / 2);
   const root = Node(array[middle]);
 
-  /** Recursively do the same for the left and right
-   * Set the root of the left half of the array and make it the left child of the main root
-   * Repeat for the right half of the array.
-   */
+  //  Recursively do the same for the left and right children with their respective halves.
   root.left = buildTree(array.slice(0, middle));
   root.right = buildTree(array.slice(middle + 1));
 
   return root;
+};
+
+const deleteLeaf = function deleteLeafNode(parentNode, targetNode) {
+  const parent = parentNode;
+
+  if (parentNode.left === targetNode) {
+    parent.left = null;
+  } else {
+    parent.right = null;
+  }
+
+  return targetNode;
+};
+
+const deleteConnected = function deleteNodeWithTwoBranches(targetNode) {
+  // This function searches for the next biggest node (the successor node) to the target node, and replaces that target node with its successor.
+  let successorParent = targetNode;
+  let successor = targetNode.right;
+
+  while (successor.left !== null) {
+    successorParent = successor;
+    successor = successor.left;
+  }
+
+  if (successorParent !== targetNode) {
+    successorParent.left = successor.right;
+  } else {
+    successorParent.right = successor.right;
+  }
+
+  const deletedNode = targetNode;
+  // eslint-disable-next-line no-param-reassign
+  targetNode.data = successor.data;
+  successor = null;
+
+  return deletedNode;
 };
 
 export default function Tree(array) {
@@ -51,8 +84,59 @@ export default function Tree(array) {
     }
   };
 
+  const deleteNode = function deleteNodeWithValue(data) {
+    let parentNode = null;
+    let targetNode = root;
+
+    // Traverse the tree until the node to be deleted is found.
+    while (targetNode.data !== data && targetNode) {
+      parentNode = targetNode;
+
+      if (targetNode.data < data) {
+        targetNode = targetNode.right;
+      } else {
+        targetNode = targetNode.left;
+      }
+    }
+
+    if (!targetNode) return root;
+
+    /** Delete the targeted node according to the state of its children and its position.
+     * If the targeted node is at the top of the tree, take the next largest node and set it as the root of the tree.
+     * If the target node only has one child either left or right, remove the node and connect its child to the parent node's corresponding branch.
+     * If the target node has both left and right children, take the next largest node and set it in place of the target node.
+     */
+
+    if (!parentNode) return deleteConnected(targetNode);
+
+    if (parentNode.left === targetNode) {
+      if (targetNode.left && !targetNode.right) {
+        parentNode.left = targetNode.left;
+      } else if (targetNode.right && !targetNode.left) {
+        parentNode.left = targetNode.right;
+      } else if (targetNode.left && targetNode.right) {
+        deleteConnected(parentNode, targetNode);
+      } else {
+        deleteLeaf(parentNode, targetNode);
+      }
+    } else if (parentNode.right === targetNode) {
+      if (targetNode.left && !targetNode.right) {
+        parentNode.right = targetNode.left;
+      } else if (targetNode.right && !targetNode.left) {
+        parentNode.right = targetNode.right;
+      } else if (targetNode.left && targetNode.right) {
+        deleteConnected(parentNode, targetNode);
+      } else {
+        deleteLeaf(parentNode, targetNode);
+      }
+    }
+
+    return targetNode;
+  };
+
   return {
     root,
     insert,
+    deleteNode,
   };
 }
