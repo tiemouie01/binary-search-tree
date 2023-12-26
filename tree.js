@@ -134,9 +134,24 @@ export default function Tree(array) {
     return targetNode;
   };
 
+  const find = function findNodeWithValue(data) {
+    let targetNode = root;
+
+    while (targetNode.data !== data && targetNode) {
+      if (targetNode.data < data) {
+        targetNode = targetNode.right;
+      } else {
+        targetNode = targetNode.left;
+      }
+    }
+
+    return targetNode;
+  };
+
   return {
     root,
     insert,
     deleteNode,
+    find,
   };
 }
