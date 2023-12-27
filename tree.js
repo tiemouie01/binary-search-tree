@@ -148,10 +148,32 @@ export default function Tree(array) {
     return targetNode;
   };
 
+  const levelOrder = function levelOrderTraversalWithCallback(callback = null) {
+    // Return an array of values if no callback is given as an argument.
+    if (!callback) return array;
+
+    // Add a reference to the root node to the queue.
+    const queue = [root];
+
+    /** While the queue is not empty:
+     * Dequeue the the node from the queue and pass it to the callback function.
+     * Enqueue the node's children.
+     */
+    while (queue.length !== 0) {
+      const node = queue.shift();
+      callback(node);
+      if (node.left !== null) queue.push(node.left);
+      if (node.right !== null) queue.push(node.right);
+    }
+
+    return null;
+  };
+
   return {
     root,
     insert,
     deleteNode,
     find,
+    levelOrder,
   };
 }
