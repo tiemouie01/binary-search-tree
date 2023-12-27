@@ -233,8 +233,25 @@ export default function Tree(array) {
     }
 
     // Compare the number of edges on both sides and return the highest number.
-    return (leftCounter > rightCounter) ? leftCounter : rightCounter;
-  }
+    return leftCounter > rightCounter ? leftCounter : rightCounter;
+  };
+
+  const depth = function edgesFromNodeToRoot(node) {
+    let traversalNode = root;
+    let counter = 0;
+
+    while (traversalNode.data !== node.data && traversalNode) {
+      if (traversalNode.data < node.data) {
+        traversalNode = traversalNode.right;
+        counter += 1;
+      } else {
+        traversalNode = traversalNode.left;
+        counter += 1;
+      }
+    }
+
+    return counter;
+  };
 
   return {
     root,
@@ -246,5 +263,6 @@ export default function Tree(array) {
     preOrder,
     postOrder,
     height,
+    depth,
   };
 }
