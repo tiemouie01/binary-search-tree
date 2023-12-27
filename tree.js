@@ -169,11 +169,59 @@ export default function Tree(array) {
     return null;
   };
 
+  const inOrder = function inOrderTraversalWithCallBack(
+    callback = null,
+    node = root,
+  ) {
+    if (!callback) return array;
+
+    if (!node) return null;
+
+    inOrder(callback, node.left);
+    callback(node);
+    inOrder(callback, node.right);
+
+    return null;
+  };
+
+  const preOrder = function preOrderTraversalWithCallBack(
+    callback = null,
+    node = root,
+  ) {
+    if (!callback) return array;
+
+    if (!node) return null;
+
+    callback(node);
+    preOrder(callback, node.left);
+    preOrder(callback, node.right);
+
+    return null;
+  };
+
+  const postOrder = function postOrderTraversalWithCallBack(
+    callback = null,
+    node = root,
+  ) {
+    if (!callback) return array;
+
+    if (!node) return null;
+
+    postOrder(callback, node.left);
+    postOrder(callback, node.right);
+    callback(node);
+
+    return null;
+  };
+
   return {
     root,
     insert,
     deleteNode,
     find,
     levelOrder,
+    inOrder,
+    preOrder,
+    postOrder,
   };
 }
