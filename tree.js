@@ -214,26 +214,18 @@ export default function Tree(array) {
     return null;
   };
 
-  const height = function edgesFromNodeToLeaf(node) {
-    let leftCounter = 0;
-    let rightCounter = 0;
-    let traversalNode = node;
-
-    // Counter the number of edges to the left of the node.
-    while (traversalNode.left !== null) {
-      traversalNode = traversalNode.left;
-      leftCounter += 1;
+  const height = function edgesFromNodeToLeafRecursive(
+    node,
+    total = 0,
+  ) {
+    if (!node) {
+      return total - 1;
     }
 
-    // Counter the number of edges to the right of the node.
-    traversalNode = node;
-    while (traversalNode.right !== null) {
-      traversalNode = traversalNode.right;
-      rightCounter += 1;
-    }
+    const leftHeight = height(node.left, total + 1);
+    const rightHeight = height(node.right, total + 1);
 
-    // Compare the number of edges on both sides and return the highest number.
-    return leftCounter > rightCounter ? leftCounter : rightCounter;
+    return leftHeight > rightHeight ? leftHeight : rightHeight;
   };
 
   const depth = function edgesFromNodeToRoot(node) {
@@ -253,6 +245,19 @@ export default function Tree(array) {
     return counter;
   };
 
+  const isBalanced = function isTreeBalanced() {
+    // Get the height of the left and right sub trees from the root.
+    const leftHeight = height(root.left);
+    const rightHeight = height(root.right);
+
+    // If the difference between the height is greater than 2, return false, else return true
+    const heightDifference = Math.abs(leftHeight - rightHeight);
+    if (heightDifference > 1) {
+      return false;
+    }
+    return true;
+  };
+
   return {
     root,
     insert,
@@ -264,5 +269,6 @@ export default function Tree(array) {
     postOrder,
     height,
     depth,
+    isBalanced,
   };
 }
