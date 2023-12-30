@@ -64,7 +64,8 @@ export default function Tree(array) {
   const getRoot = () => root;
   const setRoot = function setRootOfTree(node) {
     root = node;
-  }
+  };
+  
   const insert = function insertValueIntoTree(data, node = root) {
     /** If the data value is greater than the data value in the node,
      * The node is inserted as a child to the node's right if it has no existing child.
@@ -269,7 +270,7 @@ export default function Tree(array) {
     inOrder((node) => {
       newArray.push(node.data);
     });
-    
+
     // Build the tree again with the new array and set it as the root.
     root = buildTree(newArray);
   };
