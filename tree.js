@@ -59,8 +59,12 @@ const deleteConnected = function deleteNodeWithTwoBranches(targetNode) {
 };
 
 export default function Tree(array) {
-  const root = buildTree(array);
+  let root = buildTree(array);
 
+  const getRoot = () => root;
+  const setRoot = function setRootOfTree(node) {
+    root = node;
+  }
   const insert = function insertValueIntoTree(data, node = root) {
     /** If the data value is greater than the data value in the node,
      * The node is inserted as a child to the node's right if it has no existing child.
@@ -214,10 +218,7 @@ export default function Tree(array) {
     return null;
   };
 
-  const height = function edgesFromNodeToLeafRecursive(
-    node,
-    total = 0,
-  ) {
+  const height = function edgesFromNodeToLeafRecursive(node, total = 0) {
     if (!node) {
       return total - 1;
     }
@@ -258,8 +259,19 @@ export default function Tree(array) {
     return true;
   };
 
+  const rebalance = function rebalanceUnbalancedTree() {
+    const newArray = [];
+
+    inOrder((node) => {
+      newArray.push(node.data);
+    });
+    
+    root = buildTree(newArray);
+  };
+
   return {
-    root,
+    setRoot,
+    getRoot,
     insert,
     deleteNode,
     find,
@@ -270,5 +282,6 @@ export default function Tree(array) {
     height,
     depth,
     isBalanced,
+    rebalance,
   };
 }

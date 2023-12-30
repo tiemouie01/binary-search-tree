@@ -18,10 +18,9 @@ const test = Tree([1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12]);
 test.insert(15);
 test.insert(20);
 test.insert(13);
-// test.insert(17);
+test.insert(17);
+test.insert(80);
+test.insert(150);
 
-prettyPrint(test.root);
-
-const node = test.find(6);
-console.log(`The height of the tree is ${test.height(node)}`);
-console.log(test.isBalanced());
+test.rebalance();
+prettyPrint(test.getRoot());
