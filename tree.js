@@ -219,6 +219,7 @@ export default function Tree(array) {
   };
 
   const height = function edgesFromNodeToLeafRecursive(node, total = 0) {
+    // Recursively calculate the height of the left and right nodes until the end of a path is reached.
     if (!node) {
       return total - 1;
     }
@@ -226,10 +227,12 @@ export default function Tree(array) {
     const leftHeight = height(node.left, total + 1);
     const rightHeight = height(node.right, total + 1);
 
+    // Compare the left and right height values and return the larger value which signifies the longer path.
     return leftHeight > rightHeight ? leftHeight : rightHeight;
   };
 
   const depth = function edgesFromNodeToRoot(node) {
+    // Search for the given node from the root and count each step as an edge.
     let traversalNode = root;
     let counter = 0;
 
@@ -262,10 +265,12 @@ export default function Tree(array) {
   const rebalance = function rebalanceUnbalancedTree() {
     const newArray = [];
 
+    // Using in order traversal, add all the data values of the nodes to a new array.
     inOrder((node) => {
       newArray.push(node.data);
     });
     
+    // Build the tree again with the new array and set it as the root.
     root = buildTree(newArray);
   };
 
