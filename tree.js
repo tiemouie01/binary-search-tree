@@ -11,6 +11,9 @@ const buildTree = function buildTheBinarySearchTree(array) {
     return null;
   }
 
+  // Sort the array
+  array.sort((a, b) => a - b);
+
   // Set the middle element of the array as root.
   const middle = Math.floor(array.length / 2);
   const root = Node(array[middle]);
